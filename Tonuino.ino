@@ -157,6 +157,8 @@ MFRC522::StatusCode status;
 #define buttonPause A0
 #define buttonUp A1
 #define buttonDown A2
+#define buttonVolDown A3
+#define buttonVolUp A4
 #define busyPin 4
 
 #define LONG_PRESS 1000
@@ -164,6 +166,9 @@ MFRC522::StatusCode status;
 Button pauseButton(buttonPause);
 Button upButton(buttonUp);
 Button downButton(buttonDown);
+Button volDownButton(buttonVolDown);
+Button volUpButton(buttonVolUp);
+
 bool ignorePauseButton = false;
 bool ignoreUpButton = false;
 bool ignoreDownButton = false;
@@ -185,6 +190,8 @@ void setup() {
   pinMode(buttonPause, INPUT_PULLUP);
   pinMode(buttonUp, INPUT_PULLUP);
   pinMode(buttonDown, INPUT_PULLUP);
+  pinMode(buttonVolDown, INPUT_PULLUP);
+  pinMode(buttonVolUp, INPUT_PULLUP);
 
   // Busy Pin
   pinMode(busyPin, INPUT);
@@ -222,6 +229,7 @@ void loop() {
     pauseButton.read();
     upButton.read();
     downButton.read();
+    volDownButton.read();
 
     if (pauseButton.wasReleased()) {
       if (ignorePauseButton == false)
@@ -245,27 +253,24 @@ void loop() {
       ignorePauseButton = true;
     }
 
-    if (upButton.pressedFor(LONG_PRESS)) {
-      Serial.println(F("Volume Up"));
-      mp3.increaseVolume();
-      ignoreUpButton = true;
-    } else if (upButton.wasReleased()) {
-      if (!ignoreUpButton)
+    if (upButton.wasReleased()) {
         nextTrack(random(65536));
-      else
-        ignoreUpButton = false;
     }
 
-    if (downButton.pressedFor(LONG_PRESS)) {
+    if (downButton.wasReleased()) {
+        previousTrack();
+    }
+
+    if(volDownButton.wasReleased()){
       Serial.println(F("Volume Down"));
       mp3.decreaseVolume();
-      ignoreDownButton = true;
-    } else if (downButton.wasReleased()) {
-      if (!ignoreDownButton)
-        previousTrack();
-      else
-        ignoreDownButton = false;
     }
+
+    if(volUpButton.wasReleased()){
+      Serial.println(F("Volume Up"));
+      mp3.increaseVolume();
+    }
+
     // Ende der Buttons
   } while (!mfrc522.PICC_IsNewCardPresent());
 
