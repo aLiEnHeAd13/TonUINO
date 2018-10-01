@@ -230,6 +230,7 @@ void loop() {
     upButton.read();
     downButton.read();
     volDownButton.read();
+    volUpButton.read();
 
     if (pauseButton.wasReleased()) {
       if (ignorePauseButton == false)
