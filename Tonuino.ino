@@ -243,14 +243,7 @@ void loop() {
                ignorePauseButton == false) {
       if (isPlaying())
         mp3.playAdvertisement(currentTrack);
-      else {
-        knownCard = false;
-        mp3.playMp3FolderTrack(800);
-        Serial.println(F("Karte resetten..."));
-        resetCard();
-        mfrc522.PICC_HaltA();
-        mfrc522.PCD_StopCrypto1();
-      }
+      
       ignorePauseButton = true;
     }
 
@@ -260,6 +253,15 @@ void loop() {
 
     if (downButton.wasReleased()) {
         previousTrack();
+    }
+
+    if (upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
+              knownCard = false;
+        mp3.playMp3FolderTrack(800);
+        Serial.println(F("Karte resetten..."));
+        resetCard();
+        mfrc522.PICC_HaltA();
+        mfrc522.PCD_StopCrypto1();
     }
 
     if(volDownButton.wasPressed()){
@@ -424,7 +426,7 @@ void resetCard() {
     upButton.read();
     downButton.read();
 
-    if (upButton.wasReleased() || downButton.wasReleased()) {
+    if (upButton.wasPressed() || downButton.wasPressed()) {
       Serial.print(F("Abgebrochen!"));
       mp3.playMp3FolderTrack(802);
       return;
