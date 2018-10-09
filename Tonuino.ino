@@ -262,12 +262,12 @@ void loop() {
         previousTrack();
     }
 
-    if(volDownButton.wasReleased()){
+    if(volDownButton.wasPressed()){
       Serial.println(F("Volume Down"));
       mp3.decreaseVolume();
     }
 
-    if(volUpButton.wasReleased()){
+    if(volUpButton.wasPressed()){
       Serial.println(F("Volume Up"));
       mp3.increaseVolume();
     }
