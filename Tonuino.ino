@@ -255,7 +255,8 @@ void loop() {
         previousTrack();
     }
 
-    if (upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
+    if (!isPlaying() && 
+        upButton.pressedFor(LONG_PRESS) && downButton.pressedFor(LONG_PRESS)) {
               knownCard = false;
         mp3.playMp3FolderTrack(800);
         Serial.println(F("Karte resetten..."));
