@@ -464,6 +464,7 @@ void setupCard() {
     myCard.special = voiceMenu(3, 320, 320);
 
   // Karte ist konfiguriert -> speichern
+  mp3.pause();
   writeCard(myCard);
 }
 
